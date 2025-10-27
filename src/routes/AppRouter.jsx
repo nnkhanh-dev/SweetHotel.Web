@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Login from '../pages/Login/Login'
 import Dashboard from '../pages/Admin/Dashboard'
 import Categories from '../pages/Admin/Categories'
+import Rooms from '../pages/Admin/Rooms'
 import useAuth from '../hooks/useAuth'
 
 function PrivateRoute({ children }) {
@@ -30,6 +31,14 @@ export default function AppRouter() {
           element={
             <PrivateRoute>
               <Categories />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/rooms"
+          element={
+            <PrivateRoute>
+              <Rooms />
             </PrivateRoute>
           }
         />

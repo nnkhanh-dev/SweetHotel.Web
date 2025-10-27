@@ -16,7 +16,7 @@ export default function AdminLayout({ children }) {
     { name: 'Dashboard', to: '/admin' },
     { name: 'Categories', to: '/admin/categories' },
     { name: 'Bookings', to: '#' },
-    { name: 'Rooms', to: '#' },
+    { name: 'Rooms', to: '/admin/rooms' },
   ]
 
   return (
