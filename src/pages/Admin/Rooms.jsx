@@ -275,14 +275,17 @@ export default function Rooms() {
                       // attach images if any
                       // upload selected files as multipart/form-data to /api/RoomImages
                       // ASSUMPTION: backend accepts multipart/form-data with fields 'file' and 'roomId'.
-                      for (const file of selectedFiles) {
+                      if (selectedFiles && selectedFiles.length > 0) {
                         try {
                           const form = new FormData()
-                          form.append('file', file)
                           form.append('roomId', roomId)
-                          await api.request('https://api.sweethotel.kodopo.tech/api/RoomImages', { method: 'POST', body: form })
+                          // append each file with the key 'files' so backend binds to List<IFormFile> files
+                          for (const file of selectedFiles) form.append('files', file)
+                          // call Upload endpoint which expects [FromForm] string roomId, [FromForm] List<IFormFile> files
+                          const uploaded = await api.request('https://api.sweethotel.kodopo.tech/api/RoomImages/Upload', { method: 'POST', body: form })
+                          // uploaded is expected to be array of saved images; you can use it if needed
                         } catch (imgErr) {
-                          console.warn('Failed to upload image file', imgErr?.message)
+                          console.warn('Failed to upload image files', imgErr?.message)
                         }
                       }
                       // revoke previews after upload
@@ -515,15 +518,17 @@ export default function Rooms() {
                     })
                       // upload selected edit files if any
                       if (selectedFilesEdit && selectedFilesEdit.length > 0) {
-                        for (const file of selectedFilesEdit) {
-                          try {
-                            const form = new FormData()
-                            form.append('file', file)
-                            form.append('roomId', id)
-                            await api.request('https://api.sweethotel.kodopo.tech/api/RoomImages', { method: 'POST', body: form })
-                          } catch (imgErr) {
-                            console.warn('Failed to upload edit image', imgErr?.message)
+                        try {
+                          const form = new FormData()
+                          form.append('roomId', id)
+                          for (const file of selectedFilesEdit) form.append('files', file)
+                          const uploaded = await api.request('https://api.sweethotel.kodopo.tech/api/RoomImages/Upload', { method: 'POST', body: form })
+                          // if server returns created image objects, merge into editRoom.images
+                          if (Array.isArray(uploaded) && uploaded.length) {
+                            setEditRoom(er => ({ ...er, images: [...(er.images || []), ...uploaded] }))
                           }
+                        } catch (imgErr) {
+                          console.warn('Failed to upload edit image files', imgErr?.message)
                         }
                         filePreviewsEdit.forEach(url => URL.revokeObjectURL(url))
                         setFilePreviewsEdit([])
