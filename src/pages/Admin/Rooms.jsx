@@ -4,6 +4,16 @@ import api from '../../services/api'
 import DataTable from 'react-data-table-component'
 
 export default function Rooms() {
+  const API_BASE = 'https://api.sweethotel.kodopo.tech'
+
+  function resolveImagePath(p) {
+    if (!p) return ''
+    // already absolute
+    if (p.startsWith('http://') || p.startsWith('https://') || p.startsWith('//')) return p
+    // server returns root-relative path like `/uploads/...` or `/Upload/...`
+    if (p.startsWith('/')) return API_BASE + p
+    return p
+  }
   const [items, setItems] = useState([])
   const [filterText, setFilterText] = useState('')
   const [loading, setLoading] = useState(false)
@@ -323,7 +333,7 @@ export default function Rooms() {
                     <div className="relative bg-gray-100 rounded overflow-hidden">
                       {detailsData.images && detailsData.images.length > 0 ? (
                         <>
-                          <img src={detailsData.images[currentImageIndex].path} alt={`room-${currentImageIndex}`} className="w-full h-56 object-cover" />
+                          <img src={resolveImagePath(detailsData.images[currentImageIndex].path)} alt={`room-${currentImageIndex}`} className="w-full h-56 object-cover" />
                           {/* prev/next buttons */}
                           <button onClick={() => setCurrentImageIndex(i => (i - 1 + detailsData.images.length) % detailsData.images.length)} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full">
                             ‹
@@ -340,7 +350,7 @@ export default function Rooms() {
                         <div className="flex gap-2 p-2 overflow-x-auto">
                           {detailsData.images.map((img, idx) => (
                             <button key={img.id || idx} onClick={() => setCurrentImageIndex(idx)} className={`w-16 h-12 flex-shrink-0 rounded overflow-hidden border ${idx === currentImageIndex ? 'ring-2 ring-indigo-500' : 'ring-0'}`}>
-                              <img src={img.path} alt={`thumb-${idx}`} className="w-full h-full object-cover" />
+                              <img src={resolveImagePath(img.path)} alt={`thumb-${idx}`} className="w-full h-full object-cover" />
                             </button>
                           ))}
                         </div>
@@ -457,7 +467,7 @@ export default function Rooms() {
                   <div className="flex gap-2 overflow-x-auto">
                     {(editRoom.images || []).map(img => (
                       <div key={img.id} className="relative w-28 h-20 rounded overflow-hidden border">
-                        <img src={img.path} alt={img.id} className="w-full h-full object-cover" />
+                        <img src={resolveImagePath(img.path)} alt={img.id} className="w-full h-full object-cover" />
                         <button onClick={async () => {
                           if (!img.id) return
                           if (!confirm('Delete this image?')) return
