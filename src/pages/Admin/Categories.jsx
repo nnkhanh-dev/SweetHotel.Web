@@ -20,6 +20,7 @@ export default function Categories() {
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState(null)
   const [deleteTarget, setDeleteTarget] = useState(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   // Make loader reusable so we can refresh after creating
   async function loadItems() {
@@ -39,6 +40,22 @@ export default function Categories() {
     let mounted = true
     if (mounted) loadItems()
     return () => { mounted = false }
+  }, [])
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const onChange = () => setIsMobile(mq.matches)
+    onChange()
+    try {
+      mq.addEventListener ? mq.addEventListener('change', onChange) : mq.addListener(onChange)
+    } catch (e) {
+      // ignore
+    }
+    return () => {
+      try {
+        mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange)
+      } catch (e) {}
+    }
   }, [])
 
   function openEdit(row) {
@@ -111,20 +128,46 @@ export default function Categories() {
         <div className="bg-white border rounded-lg shadow p-4">
           {/* Wrapper to allow horizontal scrolling on small screens (like Bootstrap's .table-responsive) */}
           <div className="overflow-x-auto">
-            <DataTable
-              className="min-w-[700px]"
-              columns={columns}
-              data={filteredItems}
-              progressPending={loading}
-              pagination
-              responsive
-              persistTableHead
-              subHeader
-              subHeaderComponent={subHeaderComponent}
-              highlightOnHover
-              customStyles={customStyles}
-              noHeader
-            />
+            {!isMobile ? (
+              <DataTable
+                className="min-w-[700px]"
+                columns={columns}
+                data={filteredItems}
+                progressPending={loading}
+                pagination
+                responsive
+                persistTableHead
+                subHeader
+                subHeaderComponent={subHeaderComponent}
+                highlightOnHover
+                customStyles={customStyles}
+                noHeader
+              />
+            ) : (
+              <div className="space-y-3">
+                {filteredItems.length === 0 && !loading && (
+                  <div className="text-sm text-gray-500 p-4">No categories</div>
+                )}
+                {filteredItems.map((item) => (
+                  <div key={item.id || item.categoryId || item.Id || item.name} className="bg-white border rounded p-3 shadow-sm">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <h4 className="font-semibold text-sm">{item.name || item.title || '-'}</h4>
+                          <div className="text-xs text-gray-500">ID: {item.id ?? '-'}</div>
+                        </div>
+                        <p className="mt-2 text-sm text-gray-600">{item.description || item.desc || ''}</p>
+                        <div className="mt-2 text-xs text-gray-500">Max people: {item.maxPeople ?? item.MaxPeople ?? '-'}</div>
+                      </div>
+                      <div className="ml-3 flex-shrink-0 flex flex-col items-end gap-2">
+                        <button onClick={() => openEdit(item)} className="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">Edit</button>
+                        <button onClick={() => openDelete(item)} className="px-3 py-1 text-sm bg-rose-600 text-white rounded hover:bg-rose-700">Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           {error && <div className="mt-3 text-sm text-rose-600">{error}</div>}
         </div>
