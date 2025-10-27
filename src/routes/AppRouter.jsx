@@ -3,6 +3,7 @@ import Login from '../pages/Login/Login'
 import Dashboard from '../pages/Admin/Dashboard'
 import Categories from '../pages/Admin/Categories'
 import Rooms from '../pages/Admin/Rooms'
+import Bookings from '../pages/Admin/Bookings'
 import useAuth from '../hooks/useAuth'
 
 function PrivateRoute({ children }) {
@@ -39,6 +40,14 @@ export default function AppRouter() {
           element={
             <PrivateRoute>
               <Rooms />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin/bookings"
+          element={
+            <PrivateRoute>
+              <Bookings />
             </PrivateRoute>
           }
         />

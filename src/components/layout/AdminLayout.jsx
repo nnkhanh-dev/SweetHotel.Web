@@ -15,7 +15,7 @@ export default function AdminLayout({ children }) {
   const navItems = [
     { name: 'Dashboard', to: '/admin' },
     { name: 'Categories', to: '/admin/categories' },
-    { name: 'Bookings', to: '#' },
+    { name: 'Bookings', to: '/admin/bookings' },
     { name: 'Rooms', to: '/admin/rooms' },
   ]
 
