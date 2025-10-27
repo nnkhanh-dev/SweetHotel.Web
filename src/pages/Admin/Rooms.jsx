@@ -114,7 +114,7 @@ export default function Rooms() {
 
   function openEdit(row) {
     setEditError(null)
-    setEditRoom({ ...row })
+    setEditRoom({ ...row, categoryId: row.categoryId || row.category?.id || '' })
     setShowEdit(true)
   }
 
@@ -448,6 +448,13 @@ export default function Rooms() {
                   </select>
                 </div>
                 <div>
+                  <label className="block text-sm font-medium mb-1">Category</label>
+                  <select value={editRoom.categoryId || editRoom.category?.id || ''} onChange={(e) => setEditRoom({ ...editRoom, categoryId: e.target.value })} className="w-full border px-3 py-2 rounded">
+                    <option value="">Select category</option>
+                    {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+                <div>
                   <label className="block text-sm font-medium mb-1">Amenities</label>
                   <textarea value={editRoom.amenities || ''} onChange={(e) => setEditRoom({ ...editRoom, amenities: e.target.value })} className="w-full border px-3 py-2 rounded" rows={3} />
                 </div>
@@ -523,22 +530,41 @@ export default function Rooms() {
                         status: editRoom.status,
                         amenities: editRoom.amenities,
                         price: Number(editRoom.price) || 0,
-                        discount: Number(editRoom.discount) || 0
+                        discount: Number(editRoom.discount) || 0,
+                        categoryId: editRoom.categoryId || editRoom.category?.id || ''
                       })
                     })
-                      // upload selected edit files if any
+                      // If user selected new images, delete all existing images first, then upload new ones
                       if (selectedFilesEdit && selectedFilesEdit.length > 0) {
                         try {
+                          // delete existing images (POST Delete because hosting blocks DELETE)
+                          const existing = editRoom.images || []
+                          for (const img of existing) {
+                            try {
+                              if (img?.id) {
+                                await api.request(`https://api.sweethotel.kodopo.tech/api/RoomImages/Delete/${img.id}`, { method: 'POST' })
+                              }
+                            } catch (delErr) {
+                              console.warn('Failed to delete existing image', delErr?.message)
+                              // continue deleting others
+                            }
+                          }
+                          // upload new files
                           const form = new FormData()
                           form.append('roomId', id)
                           for (const file of selectedFilesEdit) form.append('files', file)
                           const uploaded = await api.request('https://api.sweethotel.kodopo.tech/api/RoomImages/Upload', { method: 'POST', body: form })
-                          // if server returns created image objects, merge into editRoom.images
-                          if (Array.isArray(uploaded) && uploaded.length) {
-                            setEditRoom(er => ({ ...er, images: [...(er.images || []), ...uploaded] }))
+                          // replace editRoom.images with uploaded results (if provided)
+                          if (Array.isArray(uploaded)) {
+                            setEditRoom(er => ({ ...er, images: uploaded }))
+                          } else if (uploaded) {
+                            // sometimes server returns single object
+                            setEditRoom(er => ({ ...er, images: [...(er.images || []), uploaded] }))
+                          } else {
+                            setEditRoom(er => ({ ...er, images: [] }))
                           }
                         } catch (imgErr) {
-                          console.warn('Failed to upload edit image files', imgErr?.message)
+                          console.warn('Failed to replace edit image files', imgErr?.message)
                         }
                         filePreviewsEdit.forEach(url => URL.revokeObjectURL(url))
                         setFilePreviewsEdit([])
