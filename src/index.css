@@ -24,3 +24,36 @@ h1 {
 @tailwind components;
 @tailwind utilities;
 
+/* Fix responsive table overflow for react-data-table-component */
+.datatable-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.datatable-wrapper .rdt_Table {
+  min-width: 800px; /* chỉnh theo độ rộng bảng bạn */
+}
+
+/* Ngăn flex tràn layout */
+.rdt_Table {
+  display: block !important;
+}
+
+.rdt_TableHead,
+.rdt_TableBody {
+  width: 100%;
+}
+
+/* Bo tròn khi cuộn */
+.datatable-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.datatable-wrapper::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+.datatable-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
