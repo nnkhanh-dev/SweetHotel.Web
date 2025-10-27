@@ -113,7 +113,6 @@ export default function Categories() {
           {/* Wrapper to allow horizontal scrolling on small screens (like Bootstrap's .table-responsive) */}
           <div className="overflow-x-auto">
             <DataTable
-              className="min-w-[700px]"
               columns={columns}
               data={filteredItems}
               progressPending={loading}
