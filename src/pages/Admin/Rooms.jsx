@@ -402,9 +402,12 @@ export default function Rooms() {
                   try {
                     const id = deleteTarget.id
                     if (!id) throw new Error('Missing room id')
+                    // POST delete because hosting blocks DELETE/PUT/PATCH
                     await api.request(`https://api.sweethotel.kodopo.tech/api/Rooms/Delete/${id}`, { method: 'POST' })
-                    await loadItems()
+                    // remove from local list to reflect change immediately
+                    setItems(prev => prev.filter(i => i.id !== id))
                     setShowDelete(false)
+                    setDeleteTarget(null)
                   } catch (err) {
                     setDeleteError(err.message || 'Failed to delete')
                   } finally {
