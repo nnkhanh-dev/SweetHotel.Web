@@ -27,7 +27,7 @@ h1 {
 /* Fix responsive table overflow for react-data-table-component */
 .datatable-wrapper {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: scroll;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
 }
