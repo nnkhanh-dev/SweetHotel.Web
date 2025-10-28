@@ -141,7 +141,7 @@ export default function Users() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-semibold">Users</h2>
             <p className="text-sm text-gray-500">Manage users</p>
@@ -152,11 +152,15 @@ export default function Users() {
         </div>
 
         <div className="bg-white border rounded-lg shadow p-4">
-          {subHeaderComponent}
-          <ResponsiveDataTable columns={columns} data={filtered} loading={loading} customStyles={customStyles} noHeader />
+      <div className="datatable-wrapper overflow-x-auto">
+        {subHeaderComponent}
+        <ResponsiveDataTable columns={columns} data={filtered} loading={loading} customStyles={customStyles} noHeader />
+      </div>
+          
           {error && <div className="mt-3 text-sm text-rose-600">{error}</div>}
         </div>
 
+    
         {showDetails && details && (
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             <div className="absolute inset-0 bg-black/40" onClick={() => setShowDetails(false)} />

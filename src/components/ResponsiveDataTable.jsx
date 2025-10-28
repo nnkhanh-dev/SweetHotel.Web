@@ -67,7 +67,7 @@ export default function ResponsiveDataTable({ columns = [], data = [], loading =
             <div className="flex flex-col gap-2">
               {columns.map((col, i) => (
                 <div key={i} className="flex items-start justify-between gap-4">
-                  <div className="text-xs text-gray-500 w-28">{col.name}</div>
+                  <div className="text-xs text-gray-500 w-20 sm:w-28">{col.name}</div>
                   <div className="text-sm text-gray-800 flex-1">
                     {renderCell(col, row)}
                   </div>
