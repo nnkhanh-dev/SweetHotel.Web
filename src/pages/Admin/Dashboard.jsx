@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import AdminLayout from '../../components/layout/AdminLayout'
 import api from '../../services/api'
-import SimpleBarChart from '../../components/SimpleBarChart'
+import ChartJSBar from '../../components/ChartJSBar'
 
 function formatCurrency(n) {
   if (n == null) return '-'
@@ -107,7 +107,6 @@ export default function Dashboard() {
                 <div className="text-sm text-gray-500">Total Bookings</div>
                 <div className="text-2xl font-bold text-gray-900">{loading ? '...' : totalBookings}</div>
               </div>
-              <div className={`text-sm font-medium ${totalBookings >= 0 ? 'text-green-600' : 'text-rose-600'}`}>+0%</div>
             </div>
           </div>
 
@@ -137,7 +136,6 @@ export default function Dashboard() {
                 <div className="text-sm text-gray-500">Revenue (7d)</div>
                 <div className="text-2xl font-bold text-gray-900">{loading ? '...' : formatCurrency(revenue7d)}</div>
               </div>
-              <div className={`text-sm font-medium ${revenue7d >= 0 ? 'text-green-600' : 'text-rose-600'}`}>+0%</div>
             </div>
           </div>
         </div>
@@ -146,7 +144,7 @@ export default function Dashboard() {
           <div className="lg:col-span-2 space-y-6">
             <div className="p-4 bg-white rounded-lg shadow-sm border">
               <h3 className="text-lg font-semibold mb-2">Bookings Overview</h3>
-              <SimpleBarChart data={overview.map(d => ({ date: d.date, count: d.count, revenue: d.revenue }))} height={140} />
+              <ChartJSBar data={overview.map(d => ({ date: d.date, count: d.count, revenue: d.revenue }))} height={140} />
             </div>
 
             <div className="p-4 bg-white rounded-lg shadow-sm border">
