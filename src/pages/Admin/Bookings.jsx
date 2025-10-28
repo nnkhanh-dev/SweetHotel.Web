@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import AdminLayout from '../../components/layout/AdminLayout'
 import api from '../../services/api'
-import DataTable from 'react-data-table-component'
+import ResponsiveDataTable from '../../components/ResponsiveDataTable'
 
 export default function Bookings() {
   const [items, setItems] = useState([])
@@ -79,7 +79,8 @@ export default function Bookings() {
         </div>
 
         <div className="bg-white border rounded-lg shadow p-4">
-          <DataTable columns={columns} data={filtered} progressPending={loading} pagination responsive persistTableHead subHeader subHeaderComponent={subHeaderComponent} highlightOnHover customStyles={{ headCells:{style:{fontSize:'12px',fontWeight:600}}, cells:{style:{fontSize:'13px'}} }} noHeader />
+          {subHeaderComponent}
+          <ResponsiveDataTable columns={columns} data={filtered} loading={loading} customStyles={{ headCells:{style:{fontSize:'12px',fontWeight:600}}, cells:{style:{fontSize:'13px'}} }} noHeader />
           {error && <div className="mt-3 text-sm text-rose-600">{error}</div>}
           {errorDetails && <div className="mt-3 text-sm text-rose-600">{errorDetails}</div>}
         </div>

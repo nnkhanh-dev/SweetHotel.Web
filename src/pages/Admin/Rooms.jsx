@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import AdminLayout from '../../components/layout/AdminLayout'
 import api from '../../services/api'
-import DataTable from 'react-data-table-component'
+import ResponsiveDataTable from '../../components/ResponsiveDataTable'
 
 export default function Rooms() {
   const API_BASE = 'https://api.sweethotel.kodopo.tech'
@@ -186,19 +186,8 @@ export default function Rooms() {
 
         <div className="bg-white border rounded-lg shadow p-4">
           <div className="datatable-wrapper">
-            <DataTable
-              columns={columns}
-              data={filteredItems}
-              progressPending={loading}
-              pagination
-              responsive
-              persistTableHead
-              subHeader
-              subHeaderComponent={subHeaderComponent}
-              highlightOnHover
-              customStyles={customStyles}
-              noHeader
-            />
+            {subHeaderComponent}
+            <ResponsiveDataTable columns={columns} data={filteredItems} loading={loading} customStyles={customStyles} noHeader />
           </div>
           {error && <div className="mt-3 text-sm text-rose-600">{error}</div>}
         </div>
