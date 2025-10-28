@@ -104,11 +104,10 @@ export default function AdminLayout({ children }) {
                   </button>
 
                   <div className="flex items-center gap-3">
-                    <div className="text-sm text-gray-700">
+                    <div className="text-sm text-gray-700 text-right">
                       <div className="font-medium">{auth.user?.name || auth.user?.email}</div>
                       <div className="text-xs text-gray-500">{auth.user?.role || 'Admin'}</div>
                     </div>
-                    <img src="/src/assets/react.svg" alt="avatar" className="w-9 h-9 rounded-full bg-gray-100 border border-gray-200" />
                   </div>
                 </div>
               </div>
