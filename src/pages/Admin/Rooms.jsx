@@ -177,7 +177,7 @@ export default function Rooms() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-semibold">Rooms</h2>
-            <p className="text-sm text-gray-500">List of rooms fetched from the API</p>
+            <p className="text-sm text-gray-500">Manage rooms</p>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => { setShowCreate(true); setCreateError(null); setNewRoom({ status: statuses?.[0]?.name || 'Available', amenities: '', price: 0, discount: 0, categoryId: categories?.[0]?.id || '' }); setSelectedFiles([]); setFilePreviews([]) }} className="inline-flex items-center gap-2 px-3 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 text-sm">+ New Room</button>

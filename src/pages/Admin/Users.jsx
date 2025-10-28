@@ -185,8 +185,8 @@ export default function Users() {
             <div className="relative w-full max-w-4xl bg-white rounded shadow-lg p-6 z-10">
               <div className="flex items-start justify-between">
                 <div>
-                  <h3 className="text-lg font-medium">Bookings for user</h3>
-                  <div className="text-sm text-gray-500">Showing bookings returned by the API</div>
+                  <h3 className="text-lg font-medium">User bookings</h3>
+                  <div className="text-sm text-gray-500">List bookings by user</div>
                 </div>
                 <div>
                   <button onClick={() => setShowBookings(false)} className="px-3 py-2 bg-gray-100 rounded">Close</button>

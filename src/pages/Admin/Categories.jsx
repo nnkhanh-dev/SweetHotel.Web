@@ -97,7 +97,7 @@ export default function Categories() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <h2 className="text-xl font-semibold">Categories</h2>
-            <p className="text-sm text-gray-500">Manage your categories</p>
+            <p className="text-sm text-gray-500">Manage categories</p>
           </div>
           <div className="flex items-center gap-2">
             <button

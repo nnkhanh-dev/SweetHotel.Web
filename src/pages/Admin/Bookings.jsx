@@ -90,7 +90,7 @@ export default function Bookings() {
         note: editBooking.note ?? '',
         totalPrice: editBooking.totalPrice ?? 0
       }
-      await api.request(`https://api.sweethotel.kodopo.tech/api/Bookings/Update/${id}`, { method: 'PUT', body: JSON.stringify(payload) })
+      await api.request(`https://api.sweethotel.kodopo.tech/api/Bookings/Update/${id}`, { method: 'POST', body: JSON.stringify(payload) })
       // refresh list
       await loadItems()
       setShowEdit(false)
