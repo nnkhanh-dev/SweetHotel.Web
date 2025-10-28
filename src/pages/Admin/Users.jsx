@@ -152,10 +152,10 @@ export default function Users() {
         </div>
 
         <div className="bg-white border rounded-lg shadow p-4">
-      <div className="datatable-wrapper overflow-x-auto">
-        {subHeaderComponent}
-        <ResponsiveDataTable columns={columns} data={filtered} loading={loading} customStyles={customStyles} noHeader />
-      </div>
+            <div className="datatable-wrapper overflow-x-auto">
+                {subHeaderComponent}
+                <ResponsiveDataTable columns={columns} data={filtered} loading={loading} customStyles={customStyles} noHeader />
+            </div>
           
           {error && <div className="mt-3 text-sm text-rose-600">{error}</div>}
         </div>
